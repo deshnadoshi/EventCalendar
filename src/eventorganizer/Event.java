@@ -1,3 +1,5 @@
+package eventorganizer;
+
 public class Event implements Comparable<Event>{
     private Date date; //the event date
     private Timeslot startTime; //the starting time
