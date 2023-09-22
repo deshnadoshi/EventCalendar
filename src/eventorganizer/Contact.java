@@ -103,6 +103,5 @@ public class Contact {
 
 
 
-// ALSO NEED TO CHECK IF DEPARTMENT AND EMAIL MATCH !!
 // need to check if systemout statements are allowed
 // Need to figure out the department check() thing
