@@ -4,6 +4,7 @@ public class Contact {
     private Department department;
     private String email;
 
+    // email: cs@rutgers.edu, bait@rutgers.edu, iti@rutgers.edu
     public Contact(Department department, String email){
         this.department = department;
         this.email = email;
@@ -11,12 +12,34 @@ public class Contact {
 
     public boolean departmentCheck(){
 
+
         return false; 
     }
 
     public boolean emailCheck(){
 
-        return false;
+        String [] emailArr = email.split("@");
+        String [] acceptableEmailUsername = {"cs", "ee" , "iti", "bait", "math"};
+        String acceptableEmailExtension = "rutgers.edu";
+
+        // Delete print statement later
+        for (int i = 0; i < emailArr.length; i++){
+            System.out.println(emailArr[i] + "\n");
+        }
+
+        final int EXPECTED_STR_LENGTH = 2;
+        // String is being split at the '@' symbol, so the expected number of elements in the String array is 2
+
+        // DELETE THIS!
+        System.out.println(emailArr.length + "len");
+
+
+        if (emailArr.length != EXPECTED_STR_LENGTH){
+            return false;
+        }
+
+
+        return true;
     }
     public boolean isValid(){
 
