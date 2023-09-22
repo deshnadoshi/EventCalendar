@@ -63,6 +63,9 @@ public class Contact {
         } else if (!departmentCheck()){
             System.out.println("Invalid department.");
             return false;
+        } else if (!match()){ // if they don't match, then you have to return false
+            System.out.println("Department name and email do not match.");
+            return false;
         } else if (!emailCheck() && !departmentCheck()){
             System.out.println("Invalid email and invalid department");
             return false;
@@ -71,12 +74,32 @@ public class Contact {
         return true;
     }
 
+    public boolean match(){
+        if (departmentCheck() && emailCheck()){ // if they match then the email first part should match the dept name
+            String [] emailArr = email.toLowerCase().split("@", 0);
+            final int USERNAME_INDEX = 0;
+
+            String deptName = department.toString();
+            if (deptName.equals(emailArr[USERNAME_INDEX])){
+                return true; // if they are equal then that means it's the same department
+            }
+        }
+
+        return false;
+    }
+
+
+
     // Need to delete this later: using FOR TESITNG ONLY --deshna
     public static void main(String[] args) {
-        Contact c = new Contact(Department.EE, "cs@rutgers.edu");
+        Department d = Department.valueOf("AE");
+        // System.out.println(d);
+
+        Contact c = new Contact(d, "cs@rutgers.edu");
         System.out.println(c.departmentCheck());
 
     }
 }
 
 // ALSO NEED TO CHECK IF DEPARTMENT AND EMAIL MATCH !!
+// need to check if systemout statements are allowed
