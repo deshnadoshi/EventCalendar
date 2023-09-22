@@ -1,6 +1,6 @@
 package eventorganizer;
 
-public class Event implements Comparable<Event>{
+public class Event{
     private Date date; //the event date
     private Timeslot startTime; //the starting time
     private Location location;
