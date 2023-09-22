@@ -3,7 +3,7 @@ package eventorganizer;
 public enum Timeslot {
     MORNING(10, 30),
     AFTERNOON(2, 0),
-    EVENING(6, 30),;
+    EVENING(6, 30);
 
     public final int HOUR;
     public final int MIN;
@@ -12,6 +12,7 @@ public enum Timeslot {
         this.HOUR = hour;
         this.MIN = min;
     }
+
 
 
 }
