@@ -10,6 +10,7 @@ public enum Location {
 
     private final String BUILDING;
     private final String CAMPUS;
+
     Location(String building, String campus) {
         this.BUILDING = building;
         this.CAMPUS = campus;
