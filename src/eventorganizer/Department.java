@@ -11,5 +11,6 @@ public enum Department {
 
     Department(String departmentName){
         this.DEPARTMENTNAME = departmentName;
+
     }
 }
