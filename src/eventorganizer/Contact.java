@@ -11,7 +11,7 @@ public class Contact {
 
     public boolean departmentCheck(){
 
-        return false;
+        return false; 
     }
 
     public boolean emailCheck(){
