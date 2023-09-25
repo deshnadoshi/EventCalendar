@@ -7,6 +7,7 @@ public class EventCalendar {
     private int find(Event event) {
         return 0;
     } //search an event in the list
+
     private void grow() { //increase the capacity by 4
         int eventArrLength = events.length;
         final int GROWTH_CAPACITY = 4;
