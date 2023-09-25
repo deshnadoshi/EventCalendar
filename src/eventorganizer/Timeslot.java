@@ -13,6 +13,23 @@ public enum Timeslot {
         this.MIN = min;
     }
 
+    public String toString(){
+        
+        if (MORNING){ // am time
+            if (MIN == 0){
+                String startMinStr = "00";
+                return HOUR + ":" + startMinStr + AM_LABEL;
+            }
+            return HOUR + ":" + MIN + AM_LABEL;
+        } else { // pm time
+            if (MIN == 0){
+                String startMinStr = "00";
+                return HOUR + ":" + startMinStr + PM_LABEL;
+            }
+            return HOUR + ":" + MIN + PM_LABEL;
+        }
+    }
+
 
 
 }

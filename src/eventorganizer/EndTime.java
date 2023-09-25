@@ -16,7 +16,6 @@ public class EndTime {
     public EndTime(Timeslot startTime, int duration){
         this.startTime = startTime;
         this.duration = duration;
-
         if (startTime.toString().equals("AFTERNOON") || startTime.toString().equals("EVENING") ){
             AM = false;
         }
@@ -51,17 +50,12 @@ public class EndTime {
             endHour -= AM_PM_SWITCH;
         }
 
-
-
         return new int [] {endHour, endMin};
-
     }
 
 
 
     public String toString(){
-
-
         if (AM){ // am time
             if (endMin == 0){
                 String endMinStr = "00";
