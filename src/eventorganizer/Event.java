@@ -15,7 +15,7 @@ public class Event{
         this.duration = duration;
     }
 
-    @Override
+    // @Override
     public boolean equals(Date eventDate, Timeslot start, Location loc){
 
         return false;
@@ -28,7 +28,7 @@ public class Event{
     // in progress
     }
 
-    @Override
+    // @Override
     public boolean compareTo(){
 
         return false;
