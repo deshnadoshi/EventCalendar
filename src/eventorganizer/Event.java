@@ -24,7 +24,11 @@ public class Event{
 
     @Override
     public String toString(){
-        return "[Event Date: " + date.toString() + "] [Start Time: " + startTime.toString() + "] [End: " + "]";
+        EndTime endTime = new EndTime(startTime, duration);
+
+        return "[Event Date: " + date.toString() + "] [Start Time: " + startTime.toString() + "] [End: " + endTime.toString() +"] @"
+                + location.toString() + "(" + location.getBUILDING() + ", " + location.getCAMPUS() + ") [" + contact.getDepartment().getDEPARTMENTNAME() + ", "
+                + contact.getEmail() + "]";
     // in progress
     }
 

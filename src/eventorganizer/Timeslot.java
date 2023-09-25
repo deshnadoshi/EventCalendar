@@ -15,18 +15,18 @@ public enum Timeslot {
 
     public String toString(){
         
-        if (MORNING){ // am time
+        if (HOUR == 10){ // am time
             if (MIN == 0){
                 String startMinStr = "00";
-                return HOUR + ":" + startMinStr + AM_LABEL;
+                return HOUR + ":" + startMinStr + "am";
             }
-            return HOUR + ":" + MIN + AM_LABEL;
+            return HOUR + ":" + MIN + "am";
         } else { // pm time
             if (MIN == 0){
                 String startMinStr = "00";
-                return HOUR + ":" + startMinStr + PM_LABEL;
+                return HOUR + ":" + startMinStr + "pm";
             }
-            return HOUR + ":" + MIN + PM_LABEL;
+            return HOUR + ":" + MIN + "pm";
         }
     }
 
