@@ -12,4 +12,8 @@ public enum Department {
     Department(String departmentName){
         this.DEPARTMENTNAME = departmentName;
     }
+
+    public String getDEPARTMENTNAME() {
+        return DEPARTMENTNAME;
+    }
 }

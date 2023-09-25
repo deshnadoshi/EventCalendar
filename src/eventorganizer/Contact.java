@@ -88,7 +88,13 @@ public class Contact {
         return false;
     }
 
+    public String getEmail(){
+        return email;
+    }
 
+    public Department getDepartment() {
+        return department;
+    }
 
     // Need to delete this later: using FOR TESITNG ONLY --deshna
     public static void main(String[] args) {

@@ -20,7 +20,6 @@ public class EventCalendar {
         events = growEventArr;
         System.out.println(events.length);
 
-
     }
     public boolean add(Event event) {
         return false;
