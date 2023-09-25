@@ -92,11 +92,11 @@ public class Contact {
 
     // Need to delete this later: using FOR TESITNG ONLY --deshna
     public static void main(String[] args) {
-        Department d = Department.valueOf("AE");
+        // Department [] d = Department.values();
         // System.out.println(d);
 
-        Contact c = new Contact(d, "cs@rutgers.edu");
-        System.out.println(c.departmentCheck());
+        // Contact c = new Contact(d, "cs@rutgers.edu");
+        // System.out.println(c.departmentCheck());
 
     }
 }
