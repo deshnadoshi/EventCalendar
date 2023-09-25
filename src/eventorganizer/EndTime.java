@@ -54,7 +54,7 @@ public class EndTime {
     }
 
 
-
+    @Override
     public String toString(){
         if (AM){ // am time
             if (endMin == 0){
