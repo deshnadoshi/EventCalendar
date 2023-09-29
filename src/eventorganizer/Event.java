@@ -24,7 +24,6 @@ public class Event implements Comparable<Event>{
         return (date.toString().equals(o.getDate().toString()) && startTime.toString().equals(o.getTimeSlot().toString()) && location.toString().equals(o.getLocation().toString()));
     }
 
-
     @Override
     public String toString(){
         EndTime endTime = new EndTime(startTime, duration);
