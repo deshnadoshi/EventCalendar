@@ -24,7 +24,8 @@ public class EventCalendar {
     }
     public boolean add(Event event) {
         // Needs to be added: checking invalid timeslot? idk
-        if (event.getDate().isValid() && event.getContact().isValid() && this.contains(event)) {
+        // isValid() in contact requires a string of the department name to be passed thru --deshna
+        if (event.getDate().isValid() && event.getContact().isValid(event.getContact().getDepartment().toString()) && this.contains(event)) {
             if (this.numEvents == this.events.length) {
                 this.grow();
             }
