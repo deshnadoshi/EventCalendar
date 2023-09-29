@@ -70,16 +70,16 @@ public class Contact {
     public boolean isValid(String deptName){
 
         if (!emailCheck()){
-            System.out.println("Invalid email.");
+            // System.out.println("Invalid email.");
             return false;
         } else if (!departmentCheck(deptName)){
-            System.out.println("Invalid department.");
+            // System.out.println("Invalid department.");
             return false;
         } else if (!match(deptName)){ // if they don't match, then you have to return false
-            System.out.println("Department name and email do not match.");
+            // System.out.println("Department name and email do not match.");
             return false;
         } else if (!emailCheck() && !departmentCheck(deptName)){
-            System.out.println("Invalid email and invalid department");
+            // System.out.println("Invalid email and invalid department");
             return false;
         }
 

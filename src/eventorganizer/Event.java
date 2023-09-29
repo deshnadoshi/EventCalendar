@@ -1,6 +1,6 @@
 package eventorganizer;
 
-public class Event{
+public class Event implements Comparable<Event>{
     private Date date; //the event date
     private Timeslot startTime; //the starting time
     private Location location;
@@ -15,8 +15,7 @@ public class Event{
         this.duration = duration;
     }
 
-    // @Override
-
+    @Override
     /**
      *
      * @param eventDate The date of the event being compared.
@@ -25,7 +24,7 @@ public class Event{
      * @return True if the events are the same, False otherwise.
      */
     public boolean equals(Date eventDate, Timeslot start, Location loc){
-        return (this.date == eventDate && this.startTime == start && this.location == loc);
+        return (this.date.equals(eventDate) && this.startTime.equals(start) && this.location.equals(loc));
     }
 
 
@@ -38,9 +37,19 @@ public class Event{
                 + contact.getDepartment().getDEPARTMENTNAME() + ", " + contact.getEmail() + "]";
     }
 
-    // @Override
-    public boolean compareTo(Date eventDate, Timeslot startTime, int duration){
-        return (this.date == eventDate && this.startTime == startTime);
+    @Override
+    public int compareTo(Event o){
+        Date oDate = o.getDate();
+        Timeslot oStartTime = o.getTimeSlot();
+
+        int dateCompareResult = date.compareTo(oDate);
+        int timeCompareResult = -2; //  a return of -2 means the date is not the same
+
+        if (dateCompareResult == 0){ // if the dates are the same, compare the time slots
+            timeCompareResult = startTime.compareTo(oStartTime);
+        }
+
+        return timeCompareResult;
     }
 
     public Date getDate() {
