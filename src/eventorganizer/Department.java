@@ -16,4 +16,5 @@ public enum Department {
     public String getDEPARTMENTNAME() {
         return DEPARTMENTNAME;
     }
+
 }
