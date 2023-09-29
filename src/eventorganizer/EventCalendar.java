@@ -23,21 +23,26 @@ public class EventCalendar {
 
     }
     public boolean add(Event event) {
+        // Needs to be added: checking invalid timeslot? idk
+        if (event.getDate().isValid() && event.getContact().isValid() && this.contains(event)) {
+            if (this.numEvents == this.events.length) {
+                this.grow();
+            }
+            this.events[this.numEvents] = event; // might work
+        }
         return false;
     }
     public boolean remove(Event event) {
+
         return false;
     }
     public boolean contains(Event event) {
         return false;
     }
-    public void print() { } //print the array as is
+    public void print() {
+        System.out.println(events); // not complete (don't even know if this works)
+    } //print the array as is
     public void printByDate() { } //ordered by date and timeslot
     public void printByCampus() { } //ordered by campus and building/room
     public void printByDepartment(){ } //ordered by department
-
-
-    public static void main (String [] args){
-
-    }
 }

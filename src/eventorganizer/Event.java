@@ -16,9 +16,16 @@ public class Event{
     }
 
     // @Override
-    public boolean equals(Date eventDate, Timeslot start, Location loc){
 
-        return false;
+    /**
+     *
+     * @param eventDate The date of the event being compared.
+     * @param start The start time of the event being compared.
+     * @param loc The location of the event being compared.
+     * @return True if the events are the same, False otherwise.
+     */
+    public boolean equals(Date eventDate, Timeslot start, Location loc){
+        return (this.date == eventDate && this.startTime == start && this.location == loc);
     }
 
 
@@ -32,12 +39,25 @@ public class Event{
     }
 
     // @Override
-    public boolean compareTo(){
-
-        return false;
+    public boolean compareTo(Date eventDate, Timeslot startTime, int duration){
+        return (this.date == eventDate && this.startTime == startTime);
     }
 
+    public Date getDate() {
+        return this.date;
+    }
 
+    public Timeslot getTimeSlot() {
+        return this.startTime;
+    }
+
+    public Location getLocation() {
+        return this.location;
+    }
+
+    public Contact getContact() {
+        return this.contact;
+    }
 
 
 
