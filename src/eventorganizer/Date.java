@@ -237,36 +237,108 @@ public class Date implements Comparable<Date>{
     }
 
     public static void main(String [] args){
+        test_MinYear();
+        test_MaxYear();
+        test_NonLeapYearFeb();;
+        test_MonthRange();
+        test_31DayRange();
+        test_30DayRange();
+        test_MinMonthVal();
+        test_NonNegDate();
+        test_LeapYearFeb();
+        test_RealDate();
 
+    }
+
+    private static void test_MinYear(){
         Date testCase1 = new Date(1832,9,26);
-        System.out.println("Test Case 1 - " + testCase1.toString() + ": " + testCase1.isValid());
+        boolean expectedOut = false;
+        boolean actualOut = testCase1.isValid();
+        System.out.println("**Test case #1. A year before 1900 should be invalid.");
+        testResult(testCase1, expectedOut, actualOut);
 
-        Date testCase2 = new Date(2154,6,11);
-        System.out.println("Test Case 2 - " + testCase2.toString() + ": " + testCase2.isValid());
+    }
 
-        Date testCase3 = new Date(2023,2,29);
-        System.out.println("Test Case 3 - " + testCase3.toString() + ": " + testCase3.isValid());
+    private static void test_MaxYear() {
+        Date testCase2 = new Date(2154, 6, 11);
+        boolean expectedOut = false;
+        boolean actualOut = testCase2.isValid();
+        System.out.println("**Test case #2. A year after 2100 should be invalid.");
+        testResult(testCase2, expectedOut, actualOut);
+    }
 
+    private static void test_NonLeapYearFeb() {
+        Date testCase3 = new Date(2023, 2, 29);
+        boolean expectedOut = false;
+        boolean actualOut = testCase3.isValid();
+        System.out.println("**Test case #3. Number of days in February for a non-leap year is 28.");
+        testResult(testCase3, expectedOut, actualOut);
+    }
+
+    private static void test_MonthRange(){
         Date testCase4 = new Date(2012,13,2);
-        System.out.println("Test Case 4 - " + testCase4.toString() + ": " + testCase4.isValid());
+        boolean expectedOut = false;
+        boolean actualOut = testCase4.isValid();
+        System.out.println("**Test case #4. The month must be within the range of  1 to 12.");
+        testResult(testCase4, expectedOut, actualOut);
+    }
 
+    private static void test_31DayRange(){
         Date testCase5 = new Date(2009,7,33);
-        System.out.println("Test Case 5 - " + testCase5.toString() + ": " + testCase5.isValid());
+        boolean expectedOut = false;
+        boolean actualOut = testCase5.isValid();
+        System.out.println("**Test case #5. The day should not be greater than 31 for the following months: Jan, " +
+                "Mar, May, Jul, Aug, Oct, Dec.");
+        testResult(testCase5, expectedOut, actualOut);
+    }
 
+    private static void test_30DayRange(){
         Date testCase6 = new Date(2025,6,31);
-        System.out.println("Test Case 6 - " + testCase6.toString() + ": " + testCase6.isValid());
+        boolean expectedOut = false;
+        boolean actualOut = testCase6.isValid();
+        System.out.println("**Test case #6. The day should not be greater than 30 for the following months: Apr, " +
+                "Jun, Sep, Nov.");
+        testResult(testCase6, expectedOut, actualOut);
+    }
 
+    private static void test_MinMonthVal(){
         Date testCase7 = new Date(2026,9,0);
-        System.out.println("Test Case 7 - " + testCase7.toString() + ": " + testCase7.isValid());
+        boolean expectedOut = false;
+        boolean actualOut = testCase7.isValid();
+        System.out.println("**Test case #7. The day should not be less than 1 for any of the months.");
+        testResult(testCase7, expectedOut, actualOut);
+    }
 
+    private static void test_NonNegDate(){
         Date testCase8 = new Date(2002,10,-5);
-        System.out.println("Test Case 8 - " + testCase8.toString() + ": " + testCase8.isValid());
+        boolean expectedOut = false;
+        boolean actualOut = testCase8.isValid();
+        System.out.println("**Test case #8. A negative number of the month, day, or year is invalid.");
+        testResult(testCase8, expectedOut, actualOut);
+    }
 
+    private static void test_LeapYearFeb(){
         Date testCase9 = new Date(2024,2,29);
-        System.out.println("Test Case 9 - " + testCase9.toString() + ": " + testCase9.isValid());
+        boolean expectedOut = true;
+        boolean actualOut = testCase9.isValid();
+        System.out.println("**Test case #9. For a leap year, February is permitted to have 29 days.");
+        testResult(testCase9, expectedOut, actualOut);
+    }
 
+    private static void test_RealDate(){
         Date testCase10 = new Date(2023,9,26);
-        System.out.println("Test Case 10 - " + testCase10.toString() + ": " + testCase10.isValid());
+        boolean expectedOut = true;
+        boolean actualOut = testCase10.isValid();
+        System.out.println("**Test case #10. A legitimate calendar date must be recognized as valid.");
+        testResult(testCase10, expectedOut, actualOut);
+    }
 
+    private static boolean testResult(Date date, boolean expectedOutput, boolean actualOutput){
+        if (expectedOutput == actualOutput){
+            System.out.println("Passed!");
+            return true;
+        }
+        System.out.println("Failed.");
+        return false;
     }
 }
