@@ -1,4 +1,5 @@
 package eventorganizer;
+
 /**
  Driver to run the project
  @author Prof. Chang, Deshna Doshi, Haejin Song

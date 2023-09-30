@@ -5,11 +5,11 @@ package eventorganizer;
  @author Deshna Doshi, Haejin Song
  */
 public class Event implements Comparable<Event>{
-    private Date date; //the event date
-    private Timeslot startTime; //the starting time
+    private Date date;
+    private Timeslot startTime;
     private Location location;
-    private Contact contact; //include the department name and email
-    private int duration; //in minutes
+    private Contact contact;
+    private int duration;
     static final int DATE_NOT_EQUAL = -2;
     static final int EQUAL = 0;
 
@@ -39,7 +39,6 @@ public class Event implements Comparable<Event>{
         return (date.toString().equals(checkEvent.getDate().toString()) && startTime.toString().equals(checkEvent.getTimeSlot().toString())
                 && location.toString().equals(checkEvent.getLocation().toString()));
     }
-
     /**
      * Converts the Event information into a String for display.
      * @return formatted String for an Event.

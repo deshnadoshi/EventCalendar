@@ -9,6 +9,7 @@ public class Date implements Comparable<Date>{
     private int year;
     private int month;
     private int day;
+
     private static final int MONTHS_PER_YEAR = 12;
     private static final int MAX_BOOKING_TIMEFRAME = 6;
     private static final int MIN_MONTH_VAL = 1;

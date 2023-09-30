@@ -7,6 +7,7 @@ package eventorganizer;
 public class Contact {
     private Department department;
     private String email;
+
     private static final int USERNAME_INDEX = 0;
     private static final int EXPECTED_STR_LENGTH = 2;
     private static final int EXTENSION_INDEX = 1;

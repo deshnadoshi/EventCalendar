@@ -5,7 +5,6 @@ package eventorganizer;
  @author Deshna Doshi, Haejin Song
  */
 public class EndTime {
-    // class to calculate the ending time for a given input timeslot and the duration timeslot
     private Timeslot startTime;
     private int duration;
     private int endHour;
