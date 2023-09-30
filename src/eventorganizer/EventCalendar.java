@@ -1,9 +1,14 @@
 package eventorganizer;
 
 public class EventCalendar {
-    private Event [] events; //the array holding the list of events
+    private Event[] events; //the array holding the list of events
     private int numEvents; //current number of events in the array
     public static final int NOT_FOUND = -1;
+
+    public EventCalendar(Event[] events, int numEvents) {
+        this.events = new Event[0];
+        this.numEvents = 0;
+    }
 
     private int find(Event event) {
         for (int i = 0; i < this.events.length; i++) {
