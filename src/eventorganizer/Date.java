@@ -1,21 +1,40 @@
 package eventorganizer;
 import java.util.Calendar;
 
+
+/**
+ Determines validity of a given date.
+ @author Deshna Doshi, Haejin Song
+ */
 public class Date implements Comparable<Date>{
     private int year;
     private int month;
     private int day;
 
+    /**
+     Constructor to initialize values of instance variable.
+     @param year the year of the date.
+     @param month the month of the date.
+     @param day the day of the date.
+     */
     public Date (int year, int month, int day){
         this.year = year;
         this.month = month;
         this.day = day;
     }
 
+    /**
+     Determines if the date is a valid calendar date, within six months, and in the future.
+     @return true if the date is valid, within six months, and in the future, false otherwise.
+     */
     public boolean advancedIsValid(){
         return (validCalendarDate() && withinSixMonths() && isFutureDate());
     }
 
+    /**
+     Determines if the date is a legitimate calendar date.
+     @return true if the date is a real date, false otherwise.
+     */
     public boolean validCalendarDate(){
         if (validMonth() && validYear() && validDay()){
             return true;
@@ -24,6 +43,10 @@ public class Date implements Comparable<Date>{
         return false;
     }
 
+    /**
+     Determines if the month of the date is valid.
+     @return true if the month is valid, false otherwise.
+     */
     public boolean validMonth(){
         final int MONTHS_PER_YEAR = 12;
         final int MIN_MONTH_VAL = 1;
@@ -35,6 +58,10 @@ public class Date implements Comparable<Date>{
         return false;
     }
 
+    /**
+     Determines if the day of the date is valid.
+     @return true if the day is valid, false otherwise.
+     */
     public boolean validDay(){
         boolean isLeapYear = isLeapYear();
         Calendar monthInt = Calendar.getInstance();
@@ -67,6 +94,10 @@ public class Date implements Comparable<Date>{
         return false;
     }
 
+    /**
+     Determines if the year of the date is valid.
+     @return true if the year is valid, false otherwise.
+     */
     public boolean validYear(){
         Calendar today = Calendar.getInstance();
         int currentYear = today.get(Calendar.YEAR);
@@ -80,6 +111,10 @@ public class Date implements Comparable<Date>{
         return false;
     }
 
+    /**
+     Determines if the date is within six months of today's date.
+     @return true if the date is within six months, false otherwise.
+     */
     public boolean withinSixMonths(){
         Calendar today = Calendar.getInstance();
 
@@ -94,6 +129,10 @@ public class Date implements Comparable<Date>{
 
     }
 
+    /**
+     Determines if the month and year of the date are within six months.
+     @return true if the month and year are within six months, false otherwise.
+     */
     public boolean withinSixMonths_MonthYearCheck(int currDay, int currMonth, int currYear){
         final int MAX_BOOKING_TIMEFRAME = 6;
         final int REALIGN = 1;
