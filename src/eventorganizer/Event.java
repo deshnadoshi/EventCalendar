@@ -115,6 +115,7 @@ public class Event implements Comparable<Event>{
         test_Contact();
         test_Duration();
         test_DateTimeLocSame();
+
     }
 
     /**

@@ -42,6 +42,13 @@ public class Date implements Comparable<Date>{
      @return true if the date is valid, within six months, and in the future, false otherwise.
      */
     public boolean advancedIsValid(){
+        if(!validCalendarDate()){
+            // System.out.println("Invalid calendar date.");
+        } else if (!withinSixMonths()){
+            // System.out.println("Not wihtin six months.");
+        } else if (!isFutureDate()){
+            // System.out.println("Not a future date.");
+        }
         return (validCalendarDate() && withinSixMonths() && isFutureDate());
     }
 
@@ -74,18 +81,18 @@ public class Date implements Comparable<Date>{
     public boolean validDay(){
         boolean isLeapYear = isLeapYear();
         Calendar monthInt = Calendar.getInstance();
+        int alignMonth = month;
+        alignMonth -= CALENDAR_CLASS_ALIGN;  // need to do this bc in calendar the months start from 0 index
 
-        month -= CALENDAR_CLASS_ALIGN;  // need to do this bc in calendar the months start from 0 index
-
-        if (month == monthInt.JANUARY || month == monthInt.MARCH || month == monthInt.MAY || month == monthInt.JULY || month == monthInt.AUGUST || month == monthInt.OCTOBER || month == monthInt.DECEMBER){
+        if (alignMonth == monthInt.JANUARY || alignMonth == monthInt.MARCH || alignMonth == monthInt.MAY || alignMonth == monthInt.JULY || alignMonth == monthInt.AUGUST || alignMonth == monthInt.OCTOBER || alignMonth == monthInt.DECEMBER){
             if (day <= DAY_31_MONTHS && day >= FIRST_DAY_OF_MONTH){
                 return true;
             }
-        } else if (month == monthInt.APRIL || month == monthInt.JUNE || month == monthInt.SEPTEMBER || month == monthInt.NOVEMBER){
+        } else if (alignMonth == monthInt.APRIL || alignMonth == monthInt.JUNE || alignMonth == monthInt.SEPTEMBER || alignMonth == monthInt.NOVEMBER){
             if (day <= DAY_30_MONTHS && day >= FIRST_DAY_OF_MONTH){
                 return true;
             }
-        } else if (month == monthInt.FEBRUARY){
+        } else if (alignMonth == monthInt.FEBRUARY){
             if (isLeapYear){
                 if (day <= DAY_29_MONTHS && day >= FIRST_DAY_OF_MONTH){
                     return true;
@@ -123,15 +130,41 @@ public class Date implements Comparable<Date>{
      */
     public boolean withinSixMonths(){
         Calendar today = Calendar.getInstance();
-
         int currentDay = today.get(Calendar.DAY_OF_MONTH);
-        int currentMonth = today.get(Calendar.MONTH); // goes from 0 to 11
-        int currentYear = today.get(Calendar.YEAR);
+        int currentMonth = today.get(Calendar.MONTH) + CALENDAR_CLASS_ALIGN; // goes from 0 to 11
+        // int currentYear = today.get(Calendar.YEAR);
 
-        currentMonth += CALENDAR_CLASS_ALIGN; // Need to add 1 so that the current month uses 1 - Jan, 2 - Feb ... instead of 0 - Jan, 1 - Feb
+        today.add(Calendar.MONTH, 6);
+        // System.out.println(today.getTime() + " six months fro now");
+        int sixMonthsDay = today.get(Calendar.DAY_OF_MONTH);
+        int sixMonthsMonth = today.get(Calendar.MONTH) + CALENDAR_CLASS_ALIGN;
+        int sixMonthsYear = today.get(Calendar.YEAR);
 
-        return (withinSixMonths_CompleteCheck(currentDay, currentMonth, currentYear));
+        // System.out.println(sixMonthsDay + " " + sixMonthsMonth + " "  + sixMonthsYear);
 
+        if (year == sixMonthsYear){
+            if (month < sixMonthsMonth){
+                return true;
+            } else if (month == sixMonthsMonth){
+                if (day <= sixMonthsDay){
+                    return true;
+                }
+            }
+        } else if (year < sixMonthsYear){
+            if(isFutureDate()){
+                if(month > currentMonth){
+                    return true;
+                } else if (month == currentMonth){
+                    if (day >= currentDay){
+                        return true;
+                    }
+                }
+            }
+        }
+
+        // currentMonth += CALENDAR_CLASS_ALIGN; // Need to add 1 so that the current month uses 1 - Jan, 2 - Feb ... instead of 0 - Jan, 1 - Feb
+
+        return false;
     }
 
     /**
@@ -142,7 +175,6 @@ public class Date implements Comparable<Date>{
      @return true if the month and year are within six months, false otherwise.
      */
     public boolean withinSixMonths_MonthYearCheck(int currDay, int currMonth, int currYear){
-
         int sixMonthLimit = currMonth;
         int correspondMonthToYear = currYear;
 
@@ -167,6 +199,7 @@ public class Date implements Comparable<Date>{
             currMonth -= MONTHS_PER_YEAR; // month number in the next year: month 7/2023 + 6 = 13 - 12 = 1 = Jan of 2024
             currYear++; // year also goes up by 1
         }
+
         if (year <= currYear){
             for (int i = 0; i < possibleMonths.length; i++){
                 if (possibleMonths[i] == month && possibleYear[i] == year){
@@ -179,24 +212,25 @@ public class Date implements Comparable<Date>{
 
     /**
      Determines if the day of the date (given the month and year are within six months) is within six months.
-     @param currDay the day of today's date.
-     @param currMonth the month of today's date.
-     @param currYear the year of today's date.
+
      @return true if the day (and month and year) are within six months, false otherwise.
      */
-    public boolean withinSixMonths_CompleteCheck(int currDay, int currMonth, int currYear){
+    public boolean withinSixMonths_CompleteCheck(/*int currDay, int currMonth, int currYear*/){
 
         Calendar today = Calendar.getInstance();
         int todayDay = today.get(Calendar.DAY_OF_MONTH);
         int todayMonth = today.get(Calendar.MONTH) + CALENDAR_CLASS_ALIGN;
+        int todayYear = today.get(Calendar.YEAR);
 
-        if (withinSixMonths_MonthYearCheck(currDay, currMonth, currYear)){
+        if (withinSixMonths_MonthYearCheck(todayDay, todayMonth, todayYear)){
             if (month == todayMonth) {
-                if (day >= currDay) {
+                if (day >= todayDay) {
+                    return true;
+                } else {
                     return false;
                 }
             } else {
-                return true;
+                return false;
             }
         }
         return false;

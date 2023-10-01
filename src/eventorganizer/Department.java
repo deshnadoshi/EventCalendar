@@ -29,4 +29,15 @@ public enum Department {
         return DEPARTMENTNAME;
     }
 
+    public boolean isValid(String departmentName){
+        departmentName = departmentName.toLowerCase();
+        String [] acceptableDept = {"ee", "bait", "cs", "iti", "math"};
+        for (int i = 0; i < acceptableDept.length; i++){
+            if(acceptableDept[i].equals(departmentName)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

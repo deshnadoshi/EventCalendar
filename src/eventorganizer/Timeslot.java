@@ -42,6 +42,21 @@ public enum Timeslot {
         }
     }
 
+    /**
+     * Determines if a given timeslot is valid.
+     * @param timeslotName String of the timeslot's name.
+     * @return true if the timeslot is valid, otherwise false.
+     */
+    public boolean isValid(String timeslotName){
+        timeslotName = timeslotName.toLowerCase();
+        String [] acceptableTimeslot = {"morning", "afternoon", "evening"};
+        for (int i = 0; i < acceptableTimeslot.length; i++){
+            if(acceptableTimeslot[i].equals(timeslotName)){
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 }

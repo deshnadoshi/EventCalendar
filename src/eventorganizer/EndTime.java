@@ -16,6 +16,8 @@ public class EndTime {
     private static final int MIN_PER_HOUR = 60;
     private static final int AM_PM_SWITCH = 12;
     private static final int CHECK_TIME_SINGLE_DIGIT = 0;
+    private static final int MIN_INDEX = 1;
+    private static final int HOUR_INDEX = 0;
 
     /**
      * Constructor that initializes the instance variables and determines the time group of the Event (AM vs. PM).
@@ -25,10 +27,6 @@ public class EndTime {
     public EndTime(Timeslot startTime, int duration){
         this.startTime = startTime;
         this.duration = duration;
-        if (startTime.toString().equals("AFTERNOON") || startTime.toString().equals("EVENING") ){
-            AM = false;
-        }
-
     }
 
     /**
@@ -54,15 +52,11 @@ public class EndTime {
         endHour = startHour;
         endMin = startMin;
 
-        if (endHour >= AM_PM_SWITCH){
-            AM = false;
-        }
-
         if (endHour > AM_PM_SWITCH){
-            AM = false;
             endHour -= AM_PM_SWITCH;
         }
 
+        // System.out.println("AM value: " + AM);
         return new int [] {endHour, endMin};
     }
 
@@ -72,10 +66,21 @@ public class EndTime {
      */
     @Override
     public String toString(){
-        if (AM){ // am time
+        endMin = calcEndTime()[MIN_INDEX];
+        endHour = calcEndTime()[HOUR_INDEX];
+
+        if (startTime.toString().equals("MORNING")){ // am time
             if (endMin == CHECK_TIME_SINGLE_DIGIT){
                 String endMinStr = "00";
                 return endHour + ":" + endMinStr + AM_LABEL;
+            }
+
+            if(endHour == AM_PM_SWITCH){
+                if (endMin == CHECK_TIME_SINGLE_DIGIT){
+                    String endMinStr = "00";
+                    return endHour + ":" + endMinStr + PM_LABEL;
+                }
+                return endHour + ":" + endMin + PM_LABEL;
             }
             return endHour + ":" + endMin + AM_LABEL;
         } else { // pm time

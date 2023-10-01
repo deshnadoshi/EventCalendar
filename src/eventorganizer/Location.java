@@ -39,4 +39,20 @@ public enum Location {
     public String getCAMPUS() {
         return CAMPUS;
     }
+
+    /**
+     * Determines if a given location is valid.
+     * @param locationName String of the location's name.
+     * @return true if the location is valid, otherwise false.
+     */
+    public boolean isValid(String locationName){
+        locationName = locationName.toLowerCase();
+        String [] acceptableLocation = {"hll114", "arc103", "be_aud", "til232", "ab2225", "mu302"};
+        for (int i = 0; i < acceptableLocation.length; i++){
+            if(acceptableLocation[i].equals(locationName)){
+                return true;
+            }
+        }
+        return false;
+    }
 }
