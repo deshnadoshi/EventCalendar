@@ -11,12 +11,17 @@ public class EventCalendar {
     }
 
     private int find(Event event) {
+        boolean emptyArr = true;
         for (int i = 0; i < this.events.length; i++) {
-            if (this.events[i].getDate().equals(event.getDate()) && this.events[i].getTimeSlot().equals(event.getTimeSlot()) &&
-                this.events[i].getLocation().equals(event.getLocation())) {
-                return i;
+            if (this.events[i] != null) {
+                if (this.events[i].getDate().equals(event.getDate()) && this.events[i].getTimeSlot().equals(event.getTimeSlot()) &&
+                        this.events[i].getLocation().equals(event.getLocation())) {
+                    System.out.println("entered bleh");
+                    return i;
+                }
             }
         }
+
         return NOT_FOUND;
     } //search an event in the list
 
@@ -29,12 +34,12 @@ public class EventCalendar {
             growEventArr[i] = events[i];
         }
         events = growEventArr;
-        System.out.println(events.length);
     }
     public boolean add(Event event) {
         // Needs to be added: checking invalid timeslot? idk
         // isValid() in contact requires a string of the department name to be passed thru --deshna
-        if (event.getDate().isValid() && event.getContact().isValid(event.getContact().getDepartment().toString()) && !this.contains(event)) {
+        if (event.getDate().advancedIsValid() && event.getContact().isValid(event.getContact().getDepartment().toString())
+                && !this.contains(event)) {
             if (this.numEvents >= this.events.length) {
                 this.grow();
             }
@@ -42,6 +47,7 @@ public class EventCalendar {
             this.numEvents += 1;
             return true;
         }
+
         return false;
     }
     public boolean remove(Event event) {

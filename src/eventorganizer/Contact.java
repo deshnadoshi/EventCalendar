@@ -37,7 +37,6 @@ public class Contact {
                 }
             }
         }
-
         this.email = email;
     }
 
@@ -119,16 +118,12 @@ public class Contact {
     public boolean isValid(String deptName){
 
         if (!emailCheck()){
-            // System.out.println("Invalid email.");
             return false;
         } else if (!departmentCheck(deptName)){
-            // System.out.println("Invalid department.");
             return false;
         } else if (!match(deptName)){ // if they don't match, then you have to return false
-            // System.out.println("Department name and email do not match.");
             return false;
         } else if (!emailCheck() && !departmentCheck(deptName)){
-            // System.out.println("Invalid email and invalid department");
             return false;
         }
 
@@ -144,9 +139,7 @@ public class Contact {
     public boolean match(String deptName){
         if (departmentCheck(deptName) && emailCheck()){ // if they match then the email first part should match the dept name
             String [] emailArr = email.toLowerCase().split("@", 0);
-
-
-            if (deptName.equals(emailArr[USERNAME_INDEX])){
+            if (deptName.toLowerCase().equals(emailArr[USERNAME_INDEX])){
                 return true; // if they are equal then that means it's the same department
             }
         }
