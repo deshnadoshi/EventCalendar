@@ -12,7 +12,8 @@ public class EventCalendar {
 
     private int find(Event event) {
         for (int i = 0; i < this.events.length; i++) {
-            if (this.events[i].equals(event)) {
+            if (this.events[i].getDate().equals(event.getDate()) && this.events[i].getTimeSlot().equals(event.getTimeSlot()) &&
+                this.events[i].getLocation().equals(event.getLocation())) {
                 return i;
             }
         }
@@ -39,6 +40,7 @@ public class EventCalendar {
             }
             this.events[this.numEvents] = event;
             this.numEvents += 1;
+            return true;
         }
         return false;
     }
@@ -57,31 +59,62 @@ public class EventCalendar {
         return true;
     }
     public void print() {
-        for (int i = 0; i < events.length; i++) {
-            System.out.println(events[i].toString());
+        if (numEvents != 0) {
+            System.out.println("* Event calendar *");
+            for (int i = 0; i < events.length; i++) {
+                System.out.println(events[i].toString());
+            }
+            System.out.println("* end of event calendar *");
+        } else {
+            System.out.println("Event calendar is empty!");
         }
+
     } //print the array as is
     public void printByDate() {
-        Event[] dates = events;
-        quickSort(dates, 0, events.length, "date");
-        for (int i = 0; i < dates.length; i++) {
-            System.out.println(dates[i].toString());
+        if (numEvents != 0) {
+            System.out.println("* Event calendar *");
+            Event[] dates = events;
+            quickSort(dates, 0, events.length, "date");
+            for (int i = 0; i < dates.length; i++) {
+                System.out.println(dates[i].toString());
+            }
+            System.out.println("* end of event calendar *");
+        } else {
+            System.out.println("Event calendar is empty!");
         }
+
     } //ordered by date and timeslot
     public void printByCampus() {
-        Event[] campuses = events;
-        quickSort(campuses, 0, events.length, "campus");
-        for (int i = 0; i < campuses.length; i++) {
-            System.out.println(campuses[i].toString());
+        if (numEvents != 0) {
+            System.out.println("* Event calendar by campus and building *");
+            Event[] campuses = events;
+            quickSort(campuses, 0, events.length, "campus");
+            for (int i = 0; i < campuses.length; i++) {
+                System.out.println(campuses[i].toString());
+            }
+            System.out.println("* end of event calendar *");
+        } else {
+            System.out.println("Event calendar is empty!");
         }
+
     } //ordered by campus and building/room (but it is not doing building atm i have to figure it out)
     public void printByDepartment(){
-        Event[] departments = events;
-        quickSort(departments, 0, events.length, "department");
-        for (int i = 0; i < departments.length; i++) {
-            System.out.println(departments[i].toString());
+        if (numEvents != 0) {
+            System.out.println("* Event calendar by department *");
+            Event[] departments = events;
+            quickSort(departments, 0, events.length, "department");
+            for (int i = 0; i < departments.length; i++) {
+                System.out.println(departments[i].toString());
+            }
+            System.out.println("* end of event calendar *");
+        } else {
+            System.out.println("Event calendar is empty!");
         }
     } //ordered by department
+
+    public int getNumEvents() {
+        return numEvents;
+    }
 
     // Sorting algorithm (Quicksort)
     public void quickSort(Event[] unsortedArray, int low, int high, String howToSort) {
