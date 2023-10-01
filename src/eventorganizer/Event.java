@@ -35,9 +35,10 @@ public class Event implements Comparable<Event>{
      * @return true if the date, startTime, and location of the event are equivalent, otherwise false.
      */
     @Override
-    public boolean equals(Event checkEvent){
-        return (date.toString().equals(checkEvent.getDate().toString()) && startTime.toString().equals(checkEvent.getTimeSlot().toString())
-                && location.toString().equals(checkEvent.getLocation().toString()));
+    public boolean equals(Object checkEvent){
+        Event check_Event = (Event)checkEvent;
+        return (date.toString().equals(check_Event.getDate().toString()) && startTime.toString().equals(check_Event.getTimeSlot().toString())
+                && location.toString().equals(check_Event.getLocation().toString()));
     }
     /**
      * Converts the Event information into a String for display.
