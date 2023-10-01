@@ -1,49 +1,81 @@
 package eventorganizer;
 import java.util.Calendar;
 
+/**
+ Determines validity of a given date given the day, month, and year.
+ @author Deshna Doshi, Haejin Song
+ */
 public class Date implements Comparable<Date>{
     private int year;
     private int month;
     private int day;
 
+    private static final int MONTHS_PER_YEAR = 12;
+    private static final int MAX_BOOKING_TIMEFRAME = 6;
+    private static final int MIN_MONTH_VAL = 1;
+    private static final int CALENDAR_CLASS_ALIGN = 1;
+    private static final int DAY_31_MONTHS = 31;
+    private static final int DAY_30_MONTHS = 30;
+    private static final int DAY_29_MONTHS = 29;
+    private static final int DAY_28_MONTHS = 28;
+    private static final int FIRST_DAY_OF_MONTH = 1;
+    private static final int QUADRENNIAL = 4;
+    private static final int CENTENNIAL = 100;
+    private static final int QUATERCENTENNIAL = 400;
+    private static final int MIN_YEAR = 1900;
+    private static final int MAX_YEAR = 2100;
+
+    /**
+     Constructor to initialize values of instance variables.
+     @param year the year of the date.
+     @param month the month of the date.
+     @param day the day of the date.
+     */
     public Date (int year, int month, int day){
         this.year = year;
         this.month = month;
         this.day = day;
     }
 
+    /**
+     Determines if the date is a valid calendar date, within six months, and in the future.
+     @return true if the date is valid, within six months, and in the future, false otherwise.
+     */
     public boolean advancedIsValid(){
         return (validCalendarDate() && withinSixMonths() && isFutureDate());
     }
 
+    /**
+     Determines if the date is a legitimate calendar date.
+     @return true if the date is a real date, false otherwise.
+     */
     public boolean validCalendarDate(){
         if (validMonth() && validYear() && validDay()){
             return true;
         }
-
         return false;
     }
 
+    /**
+     Determines if the month of the date is valid.
+     @return true if the month is valid, false otherwise.
+     */
     public boolean validMonth(){
-        final int MONTHS_PER_YEAR = 12;
-        final int MIN_MONTH_VAL = 1;
-
         if(month <= MONTHS_PER_YEAR && month >= MIN_MONTH_VAL){
             return true;
         }
-
         return false;
     }
 
+    /**
+     Determines if the day of the date is valid.
+     @return true if the day is valid, false otherwise.
+     */
     public boolean validDay(){
         boolean isLeapYear = isLeapYear();
         Calendar monthInt = Calendar.getInstance();
 
-        final int CALENDAR_CLASS_ALIGN = 1;
         month -= CALENDAR_CLASS_ALIGN;  // need to do this bc in calendar the months start from 0 index
-
-        final int DAY_31_MONTHS = 31; final int DAY_30_MONTHS = 30; final int DAY_29_MONTHS = 29; final int DAY_28_MONTHS = 28;
-        final int FIRST_DAY_OF_MONTH = 1;
 
         if (month == monthInt.JANUARY || month == monthInt.MARCH || month == monthInt.MAY || month == monthInt.JULY || month == monthInt.AUGUST || month == monthInt.OCTOBER || month == monthInt.DECEMBER){
             if (day <= DAY_31_MONTHS && day >= FIRST_DAY_OF_MONTH){
@@ -67,12 +99,17 @@ public class Date implements Comparable<Date>{
         return false;
     }
 
+    /**
+     Determines if the year of the date is valid.
+     @return true if the year is valid, false otherwise.
+     */
     public boolean validYear(){
         Calendar today = Calendar.getInstance();
         int currentYear = today.get(Calendar.YEAR);
 
         // since dates can only be for future, must be within 2023 and 2024 at the bare minimum
-        final int MIN_YR = currentYear; final int MAX_YR = currentYear + 1;
+        int MIN_YR = currentYear;
+        int MAX_YR = currentYear + CALENDAR_CLASS_ALIGN;
 
         if (year == MIN_YR || year == MAX_YR){
             return true;
@@ -80,6 +117,10 @@ public class Date implements Comparable<Date>{
         return false;
     }
 
+    /**
+     Determines if the date is within six months of today's date.
+     @return true if the date is within six months, false otherwise.
+     */
     public boolean withinSixMonths(){
         Calendar today = Calendar.getInstance();
 
@@ -87,40 +128,43 @@ public class Date implements Comparable<Date>{
         int currentMonth = today.get(Calendar.MONTH); // goes from 0 to 11
         int currentYear = today.get(Calendar.YEAR);
 
-        final int REALIGN_CURR_MONTH = 1;
-        currentMonth += REALIGN_CURR_MONTH; // Need to add 1 so that the current month uses 1 - Jan, 2 - Feb ... instead of 0 - Jan, 1 - Feb
+        currentMonth += CALENDAR_CLASS_ALIGN; // Need to add 1 so that the current month uses 1 - Jan, 2 - Feb ... instead of 0 - Jan, 1 - Feb
 
         return (withinSixMonths_CompleteCheck(currentDay, currentMonth, currentYear));
 
     }
 
+    /**
+     Determines if the month and year of the date are within six months.
+     @param currDay the day of today's date.
+     @param currMonth the month of today's date.
+     @param currYear the year of today's date.
+     @return true if the month and year are within six months, false otherwise.
+     */
     public boolean withinSixMonths_MonthYearCheck(int currDay, int currMonth, int currYear){
-        final int MAX_BOOKING_TIMEFRAME = 6;
-        final int REALIGN = 1;
-        final int MONTH_PER_YEAR = 12; // max 6 months ahead of current date you can book
 
         int sixMonthLimit = currMonth;
         int correspondMonthToYear = currYear;
 
-        int [] possibleMonths = new int[MAX_BOOKING_TIMEFRAME + REALIGN]; // this array will contain all months that are within 6 months from the time frame
-        int [] possibleYear = new int [MAX_BOOKING_TIMEFRAME + REALIGN];
-        int arrayIndexer = possibleMonths.length - REALIGN;
+        int [] possibleMonths = new int[MAX_BOOKING_TIMEFRAME + CALENDAR_CLASS_ALIGN]; // this array will contain all months that are within 6 months from the time frame
+        int [] possibleYear = new int [MAX_BOOKING_TIMEFRAME + CALENDAR_CLASS_ALIGN];
+        int arrayIndexer = possibleMonths.length - CALENDAR_CLASS_ALIGN;
 
         while (arrayIndexer >= 0){
             possibleMonths[arrayIndexer] = sixMonthLimit;
             possibleYear[arrayIndexer] = correspondMonthToYear; // populating list of all possible months and their corresponding years into an array to determine post-6 mos date
             sixMonthLimit++;
 
-            if (sixMonthLimit > MONTH_PER_YEAR) {
-                sixMonthLimit = REALIGN;
+            if (sixMonthLimit > MONTHS_PER_YEAR) {
+                sixMonthLimit = CALENDAR_CLASS_ALIGN;
                 correspondMonthToYear++;
             }
             arrayIndexer--;
         }
 
         currMonth += MAX_BOOKING_TIMEFRAME;
-        if (currMonth >= MONTH_PER_YEAR){
-            currMonth -= MONTH_PER_YEAR; // month number in the next year: month 7/2023 + 6 = 13 - 12 = 1 = Jan of 2024
+        if (currMonth >= MONTHS_PER_YEAR){
+            currMonth -= MONTHS_PER_YEAR; // month number in the next year: month 7/2023 + 6 = 13 - 12 = 1 = Jan of 2024
             currYear++; // year also goes up by 1
         }
         if (year <= currYear){
@@ -133,14 +177,18 @@ public class Date implements Comparable<Date>{
         return false;
     }
 
+    /**
+     Determines if the day of the date (given the month and year are within six months) is within six months.
+     @param currDay the day of today's date.
+     @param currMonth the month of today's date.
+     @param currYear the year of today's date.
+     @return true if the day (and month and year) are within six months, false otherwise.
+     */
     public boolean withinSixMonths_CompleteCheck(int currDay, int currMonth, int currYear){
-        final int MAX_BOOKING_TIMEFRAME = 6;
-        final int MONTH_PER_YEAR = 12;
-        final int REALIGN = 1;
 
         Calendar today = Calendar.getInstance();
         int todayDay = today.get(Calendar.DAY_OF_MONTH);
-        int todayMonth = today.get(Calendar.MONTH) + REALIGN;
+        int todayMonth = today.get(Calendar.MONTH) + CALENDAR_CLASS_ALIGN;
 
         if (withinSixMonths_MonthYearCheck(currDay, currMonth, currYear)){
             if (month == todayMonth) {
@@ -154,11 +202,14 @@ public class Date implements Comparable<Date>{
         return false;
     }
 
+    /**
+     Determines if a date is a future date.
+     @return true if the date is in the future, false otherwise.
+     */
     public boolean isFutureDate(){
         Calendar today = Calendar.getInstance();
-        final int REALIGN_MONTHS = 1;
         int currentDay = today.get(Calendar.DAY_OF_MONTH);
-        int currentMonth = today.get(Calendar.MONTH) + REALIGN_MONTHS; // goes from 0 to 11
+        int currentMonth = today.get(Calendar.MONTH) + CALENDAR_CLASS_ALIGN; // goes from 0 to 11
         int currentYear = today.get(Calendar.YEAR);
 
         if(year > currentYear){
@@ -173,14 +224,14 @@ public class Date implements Comparable<Date>{
             }
         }
 
-
         return false;
     }
 
+    /**
+     Determines if the year is a leap year.
+     @return true if year is a leap year, false otherwise.
+     */
     public boolean isLeapYear(){
-        final int QUADRENNIAL = 4;
-        final int CENTENNIAL = 100;
-        final int QUATERCENTENNIAL = 400;
 
         if (year % QUADRENNIAL == 0){
             if (year % CENTENNIAL == 0){
@@ -197,45 +248,63 @@ public class Date implements Comparable<Date>{
         return false;
     }
 
+    /**
+     Determines if the day, month, and year are legitimate calendar days, months, and years.
+     @return true if the date is a legitimate date, false otherwise.
+     */
     public boolean isValid(){
         return validDay() && validMonth() && basicValidYear();
     }
 
+    /**
+     Determines if the year is within 1900 and 2100.
+     Arbitrarily set guidelines for determining a valid year.
+     @return true if the year is within 1900 and 2100, false otherwise.
+     */
     public boolean basicValidYear(){
-        final int MIN_YEAR = 1900;
-        final int MAX_YEAR = 2100;
-
         if(year >= MIN_YEAR && year <= MAX_YEAR){
             return true;
         }
         return false;
     }
 
+    /**
+     Converts the date into a "X/X/XXXX" formatted String.
+     @return the date as a String.
+     */
     @Override
     public String toString(){
         return month + "/" + day +"/" + year;
     }
 
+    /**
+     Determines if two dates are equivalent.
+     @param checkDate the date that is being compared against the date calling the method.
+     @return -1 if checkDate is larger, 0 if the dates are equal, 1 if checkDate is smaller.
+     */
     @Override
-    public int compareTo(Date o) {
+    public int compareTo(Date checkDate) {
         // A.compareTo(B) if -1: A < B; 1: A > B, 0: A = B
         int EQUAL = 1;
-        if (this.year == o.year){
-            if (this.month == o.month){
-                if (this.day == o.day){
+        if (this.year == checkDate.year){
+            if (this.month == checkDate.month){
+                if (this.day == checkDate.day){
                     EQUAL = 0; // they are same 2 same
-                } else if (this.day < o.day){
+                } else if (this.day < checkDate.day){
                     EQUAL = -1; // o > this
                 }
-            } else if (this.month < o.month){
+            } else if (this.month < checkDate.month){
                 EQUAL = -1; // o date is after this
             }
-        } else if (this.year < o.year){
+        } else if (this.year < checkDate.year){
             EQUAL = -1; // o date is after this
         }
         return EQUAL;
     }
 
+    /**
+     Testbed main() to check functionality of the isValid() method.
+     */
     public static void main(String [] args){
         test_MinYear();
         test_MaxYear();
@@ -250,6 +319,9 @@ public class Date implements Comparable<Date>{
 
     }
 
+    /**
+     Checks if a year before 1900 is invalid.
+     */
     private static void test_MinYear(){
         Date testCase1 = new Date(1832,9,26);
         boolean expectedOut = false;
@@ -259,6 +331,9 @@ public class Date implements Comparable<Date>{
 
     }
 
+    /**
+     Checks if a year after 2100 is valid.
+     */
     private static void test_MaxYear() {
         Date testCase2 = new Date(2154, 6, 11);
         boolean expectedOut = false;
@@ -267,6 +342,9 @@ public class Date implements Comparable<Date>{
         testResult(testCase2, expectedOut, actualOut);
     }
 
+    /**
+     Confirms that a non-leap year does not have more than 28 days.
+     */
     private static void test_NonLeapYearFeb() {
         Date testCase3 = new Date(2023, 2, 29);
         boolean expectedOut = false;
@@ -275,6 +353,9 @@ public class Date implements Comparable<Date>{
         testResult(testCase3, expectedOut, actualOut);
     }
 
+    /**
+     Confirms that a month is within a range of 1-12.
+     */
     private static void test_MonthRange(){
         Date testCase4 = new Date(2012,13,2);
         boolean expectedOut = false;
@@ -283,6 +364,9 @@ public class Date implements Comparable<Date>{
         testResult(testCase4, expectedOut, actualOut);
     }
 
+    /**
+     Confirms that Jan, Mar, May, Jul, Aug, Oct, Dec do not have more than 31 days.
+     */
     private static void test_31DayRange(){
         Date testCase5 = new Date(2009,7,33);
         boolean expectedOut = false;
@@ -292,6 +376,9 @@ public class Date implements Comparable<Date>{
         testResult(testCase5, expectedOut, actualOut);
     }
 
+    /**
+     Confirms that Apr, Jun, Sep, Nov do not have more than 30 days.
+     */
     private static void test_30DayRange(){
         Date testCase6 = new Date(2025,6,31);
         boolean expectedOut = false;
@@ -301,6 +388,9 @@ public class Date implements Comparable<Date>{
         testResult(testCase6, expectedOut, actualOut);
     }
 
+    /**
+     Confirms that the day is not less than 1 for any month.
+     */
     private static void test_MinMonthVal(){
         Date testCase7 = new Date(2026,9,0);
         boolean expectedOut = false;
@@ -309,6 +399,9 @@ public class Date implements Comparable<Date>{
         testResult(testCase7, expectedOut, actualOut);
     }
 
+    /**
+     Confirms that a day is not negative.
+     */
     private static void test_NonNegDate(){
         Date testCase8 = new Date(2002,10,-5);
         boolean expectedOut = false;
@@ -317,6 +410,10 @@ public class Date implements Comparable<Date>{
         testResult(testCase8, expectedOut, actualOut);
     }
 
+
+    /**
+     Confirms that a leap-year can have 29 days.
+     */
     private static void test_LeapYearFeb(){
         Date testCase9 = new Date(2024,2,29);
         boolean expectedOut = true;
@@ -325,6 +422,9 @@ public class Date implements Comparable<Date>{
         testResult(testCase9, expectedOut, actualOut);
     }
 
+    /**
+     Confirms that any arbitrary and legitimate date is valid.
+     */
     private static void test_RealDate(){
         Date testCase10 = new Date(2023,9,26);
         boolean expectedOut = true;
@@ -333,6 +433,13 @@ public class Date implements Comparable<Date>{
         testResult(testCase10, expectedOut, actualOut);
     }
 
+    /**
+     * Determines if the test case was passed or failed.
+     @param date the date that is being checked for validity
+     @param expectedOutput the predicted result of the isValid() method
+     @param actualOutput the actual result of the isValid() method
+     @return true if the predicted and actual result match, false otherwise.
+     */
     private static boolean testResult(Date date, boolean expectedOutput, boolean actualOutput){
         if (expectedOutput == actualOutput){
             System.out.println("Passed!");
