@@ -1,16 +1,22 @@
 package eventorganizer;
 
 public class EventCalendar {
-    private Event [] events; //the array holding the list of events
+    private Event[] events; //the array holding the list of events
     private int numEvents; //current number of events in the array
+    public static final int NOT_FOUND = -1;
+
+    public EventCalendar(Event[] events, int numEvents) {
+        this.events = new Event[0];
+        this.numEvents = 0;
+    }
 
     private int find(Event event) {
         for (int i = 0; i < this.events.length; i++) {
-            if (this.events[i] == event) {
+            if (this.events[i].equals(event)) {
                 return i;
             }
         }
-        return -1;
+        return NOT_FOUND;
     } //search an event in the list
 
     private void grow() { //increase the capacity by 4
@@ -21,53 +27,60 @@ public class EventCalendar {
         for (int i = 0; i < events.length; i++){
             growEventArr[i] = events[i];
         }
-
-        events = null;
         events = growEventArr;
         System.out.println(events.length);
-
     }
     public boolean add(Event event) {
         // Needs to be added: checking invalid timeslot? idk
         // isValid() in contact requires a string of the department name to be passed thru --deshna
-        if (event.getDate().isValid() && event.getContact().isValid(event.getContact().getDepartment().toString()) && this.contains(event)) {
+        if (event.getDate().isValid() && event.getContact().isValid(event.getContact().getDepartment().toString()) && !this.contains(event)) {
             if (this.numEvents >= this.events.length) {
                 this.grow();
             }
-            this.events[this.numEvents] = event; // might work
+            this.events[this.numEvents] = event;
             this.numEvents += 1;
         }
         return false;
     }
     public boolean remove(Event event) {
         int removedEventIndex = find(event);
+        if (removedEventIndex == NOT_FOUND) return false;
         for (int i = removedEventIndex; i < this.events.length - 1; i++) {
             this.events[i] = this.events[i+1];
         }
         this.events[this.numEvents] = null;
         this.numEvents -= 1;
-        return false;
+        return true;
     }
     public boolean contains(Event event) {
-        return false;
+        if (find(event) == NOT_FOUND) return false;
+        return true;
     }
     public void print() {
-        System.out.println(events); // not complete (don't even know if this works)
+        for (int i = 0; i < events.length; i++) {
+            System.out.println(events[i].toString());
+        }
     } //print the array as is
     public void printByDate() {
         Event[] dates = events;
         quickSort(dates, 0, events.length, "date");
-        System.out.println(dates);
+        for (int i = 0; i < dates.length; i++) {
+            System.out.println(dates[i].toString());
+        }
     } //ordered by date and timeslot
     public void printByCampus() {
         Event[] campuses = events;
         quickSort(campuses, 0, events.length, "campus");
-        System.out.println(campuses);
+        for (int i = 0; i < campuses.length; i++) {
+            System.out.println(campuses[i].toString());
+        }
     } //ordered by campus and building/room (but it is not doing building atm i have to figure it out)
     public void printByDepartment(){
         Event[] departments = events;
         quickSort(departments, 0, events.length, "department");
-        System.out.println(departments);
+        for (int i = 0; i < departments.length; i++) {
+            System.out.println(departments[i].toString());
+        }
     } //ordered by department
 
     // Sorting algorithm (Quicksort)
@@ -80,7 +93,6 @@ public class EventCalendar {
         quickSort(unsortedArray, pivot + 1, high, howToSort);
     }
     // howToSort = date, campus, department
-    // might see if i can make this shorter but idk if i can
     private int partition(Event[] unsortedArray, int low, int high, String howToSort) {
         Event pivot = unsortedArray[high];
         int temp_pivot = low - 1;
