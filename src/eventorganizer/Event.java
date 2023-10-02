@@ -4,7 +4,7 @@ package eventorganizer;
  Compares two events to determine their similarities.
  @author Deshna Doshi, Haejin Song
  */
-public class Event implements Comparable<Event>{
+public class Event implements Comparable<Event> {
     private Date date;
     private Timeslot startTime;
     private Location location;
@@ -21,7 +21,7 @@ public class Event implements Comparable<Event>{
      @param contact the Contact of the event.
      @param duration the duration in minutes of the event.
      */
-    public Event (Date date, Timeslot startTime, Location location, Contact contact, int duration){
+    public Event (Date date, Timeslot startTime, Location location, Contact contact, int duration) {
         this.date = date;
         this.startTime = startTime;
         this.location = location;
@@ -35,7 +35,7 @@ public class Event implements Comparable<Event>{
      * @return true if the date, startTime, and location of the event are equivalent, otherwise false.
      */
     @Override
-    public boolean equals(Object checkEvent){
+    public boolean equals(Object checkEvent) {
         Event check_Event = (Event)checkEvent;
         return (date.toString().equals(check_Event.getDate().toString()) && startTime.toString().equals(check_Event.getTimeSlot().toString())
                 && location.toString().equals(check_Event.getLocation().toString()));
@@ -45,7 +45,7 @@ public class Event implements Comparable<Event>{
      * @return formatted String for an Event.
      */
     @Override
-    public String toString(){
+    public String toString() {
         EndTime endTime = new EndTime(startTime, duration);
 
         return "[Event Date: " + date.toString() + "] [Start Time: " + startTime.toString() + "] [End: " + endTime.toString() +"] @"
@@ -59,17 +59,14 @@ public class Event implements Comparable<Event>{
      * @return -1 if checkEvent is larger, 0 if the Events are equal, 1 if checkEvent is smaller
      */
     @Override
-    public int compareTo(Event checkEvent){
+    public int compareTo(Event checkEvent) {
         Date oDate = checkEvent.getDate();
         Timeslot oStartTime = checkEvent.getTimeSlot();
-
         int dateCompareResult = date.compareTo(oDate);
         int timeCompareResult = DATE_NOT_EQUAL; //  a return of -2 means the date is not the same
-
-        if (dateCompareResult == EQUAL){ // if the dates are the same, compare the time slots
+        if (dateCompareResult == EQUAL) { // if the dates are the same, compare the time slots
             timeCompareResult = startTime.compareTo(oStartTime);
         }
-
         return timeCompareResult;
     }
 
@@ -106,6 +103,12 @@ public class Event implements Comparable<Event>{
     }
 
     /**
+     Getter for duration instance variable.
+     @return the Duration in int.
+     */
+    public int getDuration() { return this.duration; }
+
+    /**
      Testbed main() for the equals() method
      */
     public static void main(String [] args){
@@ -121,7 +124,7 @@ public class Event implements Comparable<Event>{
     /**
      * Confirms that two Events with different dates are not equal.
      */
-    public static void test_InvalidDate(){
+    public static void test_InvalidDate() {
         Event testEvent1 = new Event(new Date(2023, 8, 15), Timeslot.MORNING, Location.AB2225,
                 new Contact("CS", "cs@rutgers.edu"), 30);
         Event compareEvent1 = new Event(new Date(2023, 9, 29), Timeslot.MORNING, Location.AB2225,
@@ -137,7 +140,7 @@ public class Event implements Comparable<Event>{
     /**
      * Confirms that two Events with different start times are not equal.
      */
-    public static void test_InvalidTime(){
+    public static void test_InvalidTime() {
         Event testEvent2 = new Event(new Date(2022, 6, 2), Timeslot.MORNING, Location.HLL114,
                 new Contact("CS", "cs@rutgers.edu"), 30);
         Event compareEvent2 = new Event(new Date(2022, 6, 2), Timeslot.AFTERNOON, Location.HLL114,
@@ -153,7 +156,7 @@ public class Event implements Comparable<Event>{
     /**
      * Confirms that two Events with locations dates are not equal.
      */
-    public static void test_InvalidLoc(){
+    public static void test_InvalidLoc() {
         Event testEvent3 = new Event(new Date(2025, 3, 9), Timeslot.MORNING, Location.AB2225,
                 new Contact("CS", "cs@rutgers.edu"), 30);
         Event compareEvent3 = new Event(new Date(2025, 3, 9), Timeslot.MORNING, Location.HLL114,
@@ -169,7 +172,7 @@ public class Event implements Comparable<Event>{
     /**
      * Confirms that two Events with different contacts are not impacted by equals(), and are considered equal.
      */
-    public static void test_Contact(){
+    public static void test_Contact() {
         Event testEvent4 = new Event(new Date(2015, 11, 5), Timeslot.MORNING, Location.HLL114,
                 new Contact("EE", "ee@rutgers.edu"), 30);
         Event compareEvent4 = new Event(new Date(2015, 11, 5), Timeslot.MORNING, Location.HLL114,
@@ -185,7 +188,7 @@ public class Event implements Comparable<Event>{
     /**
      * Confirms that two Events with different durations are not impacted by equals(), and are considered equal.
      */
-    public static void test_Duration(){
+    public static void test_Duration() {
         Event testEvent5 = new Event(new Date(2020, 11, 26), Timeslot.AFTERNOON, Location.ARC103,
                 new Contact("EE", "ee@rutgers.edu"), 30);
         Event compareEvent5 = new Event(new Date(2020, 11, 26), Timeslot.AFTERNOON, Location.ARC103,
@@ -201,7 +204,7 @@ public class Event implements Comparable<Event>{
     /**
      * Confirms that two Events with the same dates, start times, and locations are considered equal.
      */
-    public static void test_DateTimeLocSame(){
+    public static void test_DateTimeLocSame() {
         Event testEvent6 = new Event(new Date(2021, 9, 8), Timeslot.EVENING, Location.MU302,
                 new Contact("EE", "ee@rutgers.edu"), 30);
         Event compareEvent6 = new Event(new Date(2021, 9, 8), Timeslot.EVENING, Location.MU302,
@@ -221,8 +224,8 @@ public class Event implements Comparable<Event>{
      @param actualOutput the actual result of the equals() method
      @return true if the predicted and actual result match, false otherwise.
      */
-    private static boolean testResult(Event event, boolean expectedOutput, boolean actualOutput){
-        if (expectedOutput == actualOutput){
+    private static boolean testResult(Event event, boolean expectedOutput, boolean actualOutput) {
+        if (expectedOutput == actualOutput) {
             System.out.println("Passed!");
             return true;
         }
