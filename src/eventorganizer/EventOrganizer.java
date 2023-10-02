@@ -1,9 +1,19 @@
 package eventorganizer;
-import java.util.StringTokenizer;
 import java.util.Scanner;
 
+/**
+ This class is the user interface class that processes the command lines.
+ @author Haejin Song, Deshna Doshi
+ */
 public class EventOrganizer {
     private EventCalendar calendar;
+    private static final int NUMBER_OF_PARAMS_IN_COMMAND_A = 7;
+    private static final int NUMBER_OF_PARAMS_IN_COMMAND_R = 5;
+    private static final int NUMBER_OF_PARAMS_IN_P_COMMANDS = 1;
+
+    /**
+     Method that is continually listening in for commands that the user inputs.
+     */
     public void run() {
         System.out.println("Event Organizer running...\n");
         int CMD_ITER = 1;
@@ -14,7 +24,7 @@ public class EventOrganizer {
         while (continueReading) {
             continueReading = currentCommand.hasNextLine();
             if(CMD_ITER == 1){
-                System.out.println("");
+                System.out.println();
                 CMD_ITER++; // this is to print a line right before "a is an invalid command" otherwise it prints on the same line as the last command
             }
             String curCommand = currentCommand.nextLine();
@@ -26,8 +36,18 @@ public class EventOrganizer {
         }
     }
 
-
-
+    /**
+     Processes the commands.
+     A: add event
+     R: remove event
+     P: print list of events
+     PE: print events based on date/timeslot order
+     PC: print events based on campus/building order
+     PD: print events based on department order
+     @param command the string that is inputted
+     @param calendar the current EventCalendar instance that is used
+     @return true if it detected Q as a command, false otherwise.
+     */
     private boolean commandParser(String command, EventCalendar calendar) {
         String[] parsedCommand = command.split("\\s+");
         int counter = 0;
@@ -39,56 +59,43 @@ public class EventOrganizer {
                         Event temp = makeEvent(parsedCommand, true);
                         if (calendar.add(temp)) {
                             System.out.println("Event added to the calendar.");
-                        } else {
-                            System.out.println("add failed"); // delete this later
-                        }
-                    }
-                    counter += 7;
+                        } else System.out.println("The event is already on the calendar.");
+                    } counter += NUMBER_OF_PARAMS_IN_COMMAND_A;
                 } else if (parsedCommand[counter].equals("R")) {
                     Event temp = makeEvent(parsedCommand, false);
-                    if (checkDate(parsedCommand) && checkTimeslot(parsedCommand) && checkLocation(parsedCommand) && checkDepartment(parsedCommand)
-                            && checkEmail(parsedCommand) && checkDuration(parsedCommand)){
+                    if (checkDate(parsedCommand) && checkTimeslot(parsedCommand) && checkLocation(parsedCommand)){
                         if (calendar.remove(temp)) {
                             System.out.println("Event has been removed from the calendar!");
                         } else System.out.println("Cannot remove; event is not in the calendar!");
-                    }
-
-                    counter += 5;
+                    } counter += NUMBER_OF_PARAMS_IN_COMMAND_R;
                 } else if (parsedCommand[counter].equals("P")) {
                     calendar.print();
-                    counter += 1;
+                    counter += NUMBER_OF_PARAMS_IN_P_COMMANDS;
                 } else if (parsedCommand[counter].equals("PE")) {
                     calendar.printByDate();
-                    counter += 1;
+                    counter += NUMBER_OF_PARAMS_IN_P_COMMANDS;
                 } else if (parsedCommand[counter].equals("PC")) {
                     calendar.printByCampus();
-                    counter += 1;
+                    counter += NUMBER_OF_PARAMS_IN_P_COMMANDS;
                 } else if (parsedCommand[counter].equals("PD")) {
                     calendar.printByDepartment();
-                    counter += 1;
-                } else {
-                    return true;
-                }
+                    counter += NUMBER_OF_PARAMS_IN_P_COMMANDS;
+                } else return true;
             } else {
                 if (!(parsedCommand[counter].equals(""))) {
                     System.out.println(parsedCommand[counter] + " is an invalid command!");
-                }
-                counter += 1;
+                } counter += NUMBER_OF_PARAMS_IN_P_COMMANDS;
             }
-        }
-        return false;
+        } return false;
     }
 
-    private String[] deleteArray(String[] array, int numToRemove) {
-        String[] newArray = new String[array.length-numToRemove];
-        int counter = 0;
-        for (int i = numToRemove; i < array.length; i++) {
-            newArray[counter] = array[i];
-            counter += 1;
-        }
-        return newArray;
-    }
-
+    /**
+     Makes an Event object with the given info.
+     @param parsedCommand the info used to make the event
+     @param full true if the event has all the info, false if the event only has date,
+     timeslot, and location info, so the last two parameters are passed as nulls
+     @return the Event object that is created
+     */
     private Event makeEvent(String[] parsedCommand, boolean full) {
         if (full) {
             String[] parsedDate = parsedCommand[1].split("/");
@@ -110,16 +117,26 @@ public class EventOrganizer {
 
     }
 
+    /**
+     Checks if the command is a valid one.
+     @param commandLetter the string that holds the potential command
+     @return true if commandLetter is a valid command, false otherwise.
+     */
     private boolean checkValid(String commandLetter) {
         return (commandLetter.equals("A") || commandLetter.equals("R") | commandLetter.equals("P") ||
                 commandLetter.equals("PE") || commandLetter.equals("PC") || commandLetter.equals("PD") ||
                 commandLetter.equals("Q"));
     }
 
-    public boolean checkTimeslot(String [] parsedCommand){
+    /**
+     Checks if it is a valid Timeslot.
+     @param parsedCommand the full current command
+     @return true if it is a valid Timeslot, false otherwise.
+     */
+    public boolean checkTimeslot(String[] parsedCommand){
         Timeslot timeslotObj = Timeslot.AFTERNOON;  // this is to use as a place holder for a timeslot object, bc we need to check if the timeslot is valid
 
-        if(timeslotObj.isValid(parsedCommand[2])) {
+        if (timeslotObj.isValid(parsedCommand[2])) {
             return true;
         }
         System.out.println("Invalid time slot!");
@@ -127,21 +144,30 @@ public class EventOrganizer {
 
     }
 
-    public boolean checkLocation(String [] parsedCommand){
+    /**
+     Checks if it is a valid Location.
+     @param parsedCommand the full current command
+     @return true if it is a valid Location, false otherwise.
+     */
+    public boolean checkLocation(String[] parsedCommand){
         Location locationObj = Location.AB2225;
 
-        if(locationObj.isValid(parsedCommand[3])) {
+        if (locationObj.isValid(parsedCommand[3])) {
             return true;
         }
         System.out.println("Invalid location!");
         return false;
-
     }
 
-    public boolean checkDepartment(String [] parsedCommand){
+    /**
+     Checks if it is a valid Department.
+     @param parsedCommand the full current command
+     @return true if it is a valid Department, false otherwise.
+     */
+    public boolean checkDepartment(String[] parsedCommand){
         Department deptObj = Department.EE;
 
-        if(deptObj.isValid(parsedCommand[4])) {
+        if (deptObj.isValid(parsedCommand[4])) {
             return true;
         }
         System.out.println("Invalid contact information!");
@@ -149,12 +175,17 @@ public class EventOrganizer {
 
     }
 
-    public boolean checkDate(String [] parsedCommand){
+    /**
+     Checks if it is a valid Date.
+     @param parsedCommand the full current command
+     @return true if it is a valid Date, false otherwise.
+     */
+    public boolean checkDate(String[] parsedCommand){
         String[] parsedDate = parsedCommand[1].split("/");
         Date tempDate = new Date(Integer.parseInt(parsedDate[2]), Integer.parseInt(parsedDate[0]),
                 Integer.parseInt(parsedDate[1]));
 
-        if(!tempDate.validCalendarDate()){
+        if (!tempDate.validCalendarDate()){
             System.out.println(tempDate.toString() + ": Invalid calendar date!");
             return false;
         } else if (!tempDate.isFutureDate()){
@@ -167,17 +198,27 @@ public class EventOrganizer {
         return true;
     }
 
-    public boolean checkDuration(String [] parsedCommand){
+    /**
+     Checks if it is a valid Duration for an event.
+     Duration has to be less than 30 or greater than 120 to be a valid event.
+     @param parsedCommand the full current command
+     @return true if it is a valid Duration, false otherwise.
+     */
+    public boolean checkDuration(String[] parsedCommand){
         int duration = Integer.parseInt(parsedCommand[6]);
         if (duration < 30 || duration > 120){
             System.out.println("Event duration must be at least 30 minutes and at most 120 minutes");
             return false;
         }
-
         return true;
     }
 
-    public boolean checkEmail(String [] parsedCommand){
+    /**
+     Checks if it is a valid Contact.
+     @param parsedCommand the full current command
+     @return true if it is a valid Contact, false otherwise.
+     */
+    public boolean checkEmail(String[] parsedCommand){
         Contact emailCheckOnly = new Contact(Department.EE, parsedCommand[5]);
         if (!emailCheckOnly.emailCheck()){
             System.out.println("Invalid contact information!");
@@ -185,6 +226,4 @@ public class EventOrganizer {
         }
         return true;
     }
-
-
 }
