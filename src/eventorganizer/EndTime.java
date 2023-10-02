@@ -35,35 +35,13 @@ public class EndTime {
      * @return integer array with the ending hour (index 0) and ending minute (index 1) of the Event.
      */
     public int [] calcEndTime(){
-        /*int startHour = startTime.HOUR;
-        int startMin = startTime.MIN;
-
-        while (duration >= MIN_PER_HOUR){
-            duration -= MIN_PER_HOUR;
-            startHour++;
-        }
-
-        startMin += duration;
-
-        if (startMin >= MIN_PER_HOUR){
-            startHour++;
-            startMin -= MIN_PER_HOUR;
-        }
-
-        endHour = startHour;
-        endMin = startMin;
-
-        if (endHour > AM_PM_SWITCH){
-            endHour -= AM_PM_SWITCH;
-        }*/
         int durationCounter = duration;
 
         while (durationCounter >= MIN_PER_HOUR){
-            durationCounter -= MIN_PER_HOUR; // decrease counter by 60
+            durationCounter -= MIN_PER_HOUR; // decrease counter by the number of minutes in an hour
             endHour++;
         }
         int timeToNextHour = MIN_PER_HOUR - endMin;
-        // once it's not greater than 60
         if (durationCounter >= timeToNextHour){
             durationCounter = durationCounter - timeToNextHour;
             endHour++;
