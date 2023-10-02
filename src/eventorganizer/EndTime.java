@@ -9,7 +9,6 @@ public class EndTime {
     private int duration;
     private int endHour;
     private int endMin;
-    private boolean AM = true;
     private final int TIME_PARAMETERS = 2;
     private static final String AM_LABEL = "am";
     private static final String PM_LABEL = "pm";
@@ -27,6 +26,8 @@ public class EndTime {
     public EndTime(Timeslot startTime, int duration){
         this.startTime = startTime;
         this.duration = duration;
+        endHour = startTime.HOUR;
+        endMin = startTime.MIN;
     }
 
     /**
@@ -34,7 +35,7 @@ public class EndTime {
      * @return integer array with the ending hour (index 0) and ending minute (index 1) of the Event.
      */
     public int [] calcEndTime(){
-        int startHour = startTime.HOUR;
+        /*int startHour = startTime.HOUR;
         int startMin = startTime.MIN;
 
         while (duration >= MIN_PER_HOUR){
@@ -54,9 +55,23 @@ public class EndTime {
 
         if (endHour > AM_PM_SWITCH){
             endHour -= AM_PM_SWITCH;
+        }*/
+        int durationCounter = duration;
+
+        while (durationCounter >= MIN_PER_HOUR){
+            durationCounter -= MIN_PER_HOUR; // decrease counter by 60
+            endHour++;
+        }
+        int timeToNextHour = MIN_PER_HOUR - endMin;
+        // once it's not greater than 60
+        if (durationCounter >= timeToNextHour){
+            durationCounter = durationCounter - timeToNextHour;
+            endHour++;
+            endMin = durationCounter;
+        } else {
+            endMin += durationCounter;
         }
 
-        // System.out.println("AM value: " + AM);
         return new int [] {endHour, endMin};
     }
 
@@ -66,10 +81,11 @@ public class EndTime {
      */
     @Override
     public String toString(){
-        endMin = calcEndTime()[MIN_INDEX];
-        endHour = calcEndTime()[HOUR_INDEX];
+        int [] endTimes = calcEndTime();
+        endMin = endTimes[MIN_INDEX];
+        endHour = endTimes[HOUR_INDEX];
 
-        if (startTime.toString().equals("MORNING")){ // am time
+        if (startTime.toString().contains("am")){ // am time
             if (endMin == CHECK_TIME_SINGLE_DIGIT){
                 String endMinStr = "00";
                 return endHour + ":" + endMinStr + AM_LABEL;
