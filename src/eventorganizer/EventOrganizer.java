@@ -10,6 +10,18 @@ public class EventOrganizer {
     private static final int NUMBER_OF_PARAMS_IN_COMMAND_A = 7;
     private static final int NUMBER_OF_PARAMS_IN_COMMAND_R = 5;
     private static final int NUMBER_OF_PARAMS_IN_P_COMMANDS = 1;
+    private static final int INITIAL_ARR_SIZE = 4;
+    private static final int DATE_POSITION_IN_CMD = 1;
+    private static final int DAY_POSITION_IN_DATE = 1;
+    private static final int MONTH_POSITION_IN_DATE = 0;
+    private static final int YEAR_POSITION_IN_DATE = 2;
+    private static final int TIMESLOT_POSITION_IN_CMD = 2;
+    private static final int LOC_POSITION_IN_CMD = 3;
+    private static final int DEPT_POSITION_IN_CMD = 4;
+    private static final int EMAIL_POSITION_IN_CMD = 5;
+    private static final int DURATION_POSITION_IN_CMD = 6;
+
+
 
     /**
      Method that is continually listening in for commands that the user inputs.
@@ -17,7 +29,7 @@ public class EventOrganizer {
     public void run() {
         System.out.println("Event Organizer running...\n");
         int CMD_ITER = 1;
-        Event[] events = new Event[4];
+        Event[] events = new Event[INITIAL_ARR_SIZE];
         EventCalendar calendar = new EventCalendar(events, 0);
         Scanner currentCommand = new Scanner(System.in);
         boolean continueReading = true;
@@ -98,20 +110,20 @@ public class EventOrganizer {
      */
     private Event makeEvent(String[] parsedCommand, boolean full) {
         if (full) {
-            String[] parsedDate = parsedCommand[1].split("/");
-            Date tempDate = new Date(Integer.parseInt(parsedDate[2]), Integer.parseInt(parsedDate[0]),
-                    Integer.parseInt(parsedDate[1]));
-            Timeslot tempTimeslot = Timeslot.valueOf(parsedCommand[2].toUpperCase());
-            Location tempLocation = Location.valueOf(parsedCommand[3].toUpperCase());
-            Contact tempContact = new Contact(parsedCommand[4], parsedCommand[5]);
+            String[] parsedDate = parsedCommand[DATE_POSITION_IN_CMD].split("/");
+            Date tempDate = new Date(Integer.parseInt(parsedDate[YEAR_POSITION_IN_DATE]), Integer.parseInt(parsedDate[MONTH_POSITION_IN_DATE]),
+                    Integer.parseInt(parsedDate[DAY_POSITION_IN_DATE]));
+            Timeslot tempTimeslot = Timeslot.valueOf(parsedCommand[TIMESLOT_POSITION_IN_CMD].toUpperCase());
+            Location tempLocation = Location.valueOf(parsedCommand[LOC_POSITION_IN_CMD].toUpperCase());
+            Contact tempContact = new Contact(parsedCommand[DEPT_POSITION_IN_CMD], parsedCommand[EMAIL_POSITION_IN_CMD]);
             return new Event(tempDate, tempTimeslot, tempLocation, tempContact,
-                    Integer.parseInt(parsedCommand[6]));
+                    Integer.parseInt(parsedCommand[DURATION_POSITION_IN_CMD]));
         } else {
-            String[] parsedDate = parsedCommand[1].split("/");
-            Date tempDate = new Date(Integer.parseInt(parsedDate[2]), Integer.parseInt(parsedDate[0]),
-                    Integer.parseInt(parsedDate[1]));
-            Timeslot tempTimeslot = Timeslot.valueOf(parsedCommand[2].toUpperCase());
-            Location tempLocation = Location.valueOf(parsedCommand[3].toUpperCase());
+            String[] parsedDate = parsedCommand[DATE_POSITION_IN_CMD].split("/");
+            Date tempDate = new Date(Integer.parseInt(parsedDate[YEAR_POSITION_IN_DATE]), Integer.parseInt(parsedDate[MONTH_POSITION_IN_DATE]),
+                    Integer.parseInt(parsedDate[DAY_POSITION_IN_DATE]));
+            Timeslot tempTimeslot = Timeslot.valueOf(parsedCommand[TIMESLOT_POSITION_IN_CMD].toUpperCase());
+            Location tempLocation = Location.valueOf(parsedCommand[LOC_POSITION_IN_CMD].toUpperCase());
             return new Event(tempDate, tempTimeslot, tempLocation, null, 0);
         }
 
@@ -136,7 +148,7 @@ public class EventOrganizer {
     public boolean checkTimeslot(String[] parsedCommand){
         Timeslot timeslotObj = Timeslot.AFTERNOON;  // this is to use as a place holder for a timeslot object, bc we need to check if the timeslot is valid
 
-        if (timeslotObj.isValid(parsedCommand[2])) {
+        if (timeslotObj.isValid(parsedCommand[TIMESLOT_POSITION_IN_CMD])) {
             return true;
         }
         System.out.println("Invalid time slot!");
@@ -152,7 +164,7 @@ public class EventOrganizer {
     public boolean checkLocation(String[] parsedCommand){
         Location locationObj = Location.AB2225;
 
-        if (locationObj.isValid(parsedCommand[3])) {
+        if (locationObj.isValid(parsedCommand[LOC_POSITION_IN_CMD])) {
             return true;
         }
         System.out.println("Invalid location!");
@@ -167,7 +179,7 @@ public class EventOrganizer {
     public boolean checkDepartment(String[] parsedCommand){
         Department deptObj = Department.EE;
 
-        if (deptObj.isValid(parsedCommand[4])) {
+        if (deptObj.isValid(parsedCommand[DEPT_POSITION_IN_CMD])) {
             return true;
         }
         System.out.println("Invalid contact information!");
@@ -181,9 +193,9 @@ public class EventOrganizer {
      @return true if it is a valid Date, false otherwise.
      */
     public boolean checkDate(String[] parsedCommand){
-        String[] parsedDate = parsedCommand[1].split("/");
-        Date tempDate = new Date(Integer.parseInt(parsedDate[2]), Integer.parseInt(parsedDate[0]),
-                Integer.parseInt(parsedDate[1]));
+        String[] parsedDate = parsedCommand[DATE_POSITION_IN_CMD].split("/");
+        Date tempDate = new Date(Integer.parseInt(parsedDate[YEAR_POSITION_IN_DATE]), Integer.parseInt(parsedDate[MONTH_POSITION_IN_DATE]),
+                Integer.parseInt(parsedDate[DAY_POSITION_IN_DATE]));
 
         if (!tempDate.validCalendarDate()){
             System.out.println(tempDate.toString() + ": Invalid calendar date!");
@@ -205,7 +217,7 @@ public class EventOrganizer {
      @return true if it is a valid Duration, false otherwise.
      */
     public boolean checkDuration(String[] parsedCommand){
-        int duration = Integer.parseInt(parsedCommand[6]);
+        int duration = Integer.parseInt(parsedCommand[DURATION_POSITION_IN_CMD]);
         if (duration < 30 || duration > 120){
             System.out.println("Event duration must be at least 30 minutes and at most 120 minutes");
             return false;
@@ -219,7 +231,7 @@ public class EventOrganizer {
      @return true if it is a valid Contact, false otherwise.
      */
     public boolean checkEmail(String[] parsedCommand){
-        Contact emailCheckOnly = new Contact(Department.EE, parsedCommand[5]);
+        Contact emailCheckOnly = new Contact(Department.EE, parsedCommand[EMAIL_POSITION_IN_CMD]);
         if (!emailCheckOnly.emailCheck()){
             System.out.println("Invalid contact information!");
             return false;

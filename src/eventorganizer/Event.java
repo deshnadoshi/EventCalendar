@@ -49,7 +49,7 @@ public class Event implements Comparable<Event> {
         EndTime endTime = new EndTime(startTime, duration);
 
         return "[Event Date: " + date.toString() + "] [Start Time: " + startTime.toString() + "] [End: " + endTime.toString() +"] @"
-                + location.toString() + "(" + location.getBUILDING() + ", " + location.getCAMPUS() + ") ["
+                + location.toString() + " (" + location.getBUILDING() + ", " + location.getCAMPUS() + ") [Contact: "
                 + contact.getDepartment().getDEPARTMENTNAME() + ", " + contact.getEmail() + "]";
     }
 

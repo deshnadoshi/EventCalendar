@@ -1,4 +1,5 @@
 package eventorganizer;
+
 /**
  This class is the array-based implementation that holds the events.
  @author Haejin Song, Deshna Doshi

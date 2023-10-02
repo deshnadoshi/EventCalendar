@@ -9,7 +9,6 @@ public class EndTime {
     private int duration;
     private int endHour;
     private int endMin;
-    private final int TIME_PARAMETERS = 2;
     private static final String AM_LABEL = "am";
     private static final String PM_LABEL = "pm";
     private static final int MIN_PER_HOUR = 60;
@@ -17,6 +16,7 @@ public class EndTime {
     private static final int CHECK_TIME_SINGLE_DIGIT = 0;
     private static final int MIN_INDEX = 1;
     private static final int HOUR_INDEX = 0;
+    private static final int SINGLE_DIGIT_TIME = 10;
 
     /**
      * Constructor that initializes the instance variables and determines the time group of the Event (AM vs. PM).
@@ -62,25 +62,33 @@ public class EndTime {
         int [] endTimes = calcEndTime();
         endMin = endTimes[MIN_INDEX];
         endHour = endTimes[HOUR_INDEX];
+        if(endHour == AM_PM_SWITCH){
+            if (endMin == CHECK_TIME_SINGLE_DIGIT){
+                String endMinStr = "00";
+                return endHour + ":" + endMinStr + PM_LABEL;
+            } if (endMin < SINGLE_DIGIT_TIME){
+                String endMinStr = "0" + endMin;
+                return endHour + ":" + endMinStr + PM_LABEL;
+            }
+            return endHour + ":" + endMin + PM_LABEL;
+        }
 
         if (startTime.toString().contains("am")){ // am time
             if (endMin == CHECK_TIME_SINGLE_DIGIT){
                 String endMinStr = "00";
                 return endHour + ":" + endMinStr + AM_LABEL;
-            }
-
-            if(endHour == AM_PM_SWITCH){
-                if (endMin == CHECK_TIME_SINGLE_DIGIT){
-                    String endMinStr = "00";
-                    return endHour + ":" + endMinStr + PM_LABEL;
-                }
-                return endHour + ":" + endMin + PM_LABEL;
+            } if (endMin < SINGLE_DIGIT_TIME){
+                String endMinStr = "0" + endMin;
+                return endHour + ":" + endMinStr + AM_LABEL;
             }
             return endHour + ":" + endMin + AM_LABEL;
         } else { // pm time
             if (endMin == CHECK_TIME_SINGLE_DIGIT){
                 String endMinStr = "00";
                 return endHour + ":" + endMinStr + PM_LABEL;
+            } if (endMin < SINGLE_DIGIT_TIME){
+                String endMinStr = "0" + endMin;
+                return endHour + ":" + endMinStr + AM_LABEL;
             }
             return endHour + ":" + endMin + PM_LABEL;
         }
