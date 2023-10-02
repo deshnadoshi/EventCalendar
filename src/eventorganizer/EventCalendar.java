@@ -214,7 +214,7 @@ public class EventCalendar {
                     temp_pivot += 1;
                     swap(i, temp_pivot, unsortedArray);
                 } else if (unsortedArray[i].getDate().compareTo(pivot.getDate()) == 0 &&
-                        unsortedArray[i].compareTo(pivot) < 0) {
+                        (unsortedArray[i].compareTo(pivot) < 0 || unsortedArray[i].getDuration() < pivot.getDuration())) {
                     temp_pivot += 1;
                     swap(i, temp_pivot, unsortedArray);
                 }

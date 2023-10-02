@@ -103,6 +103,12 @@ public class Event implements Comparable<Event> {
     }
 
     /**
+     Getter for duration instance variable.
+     @return the Duration in int.
+     */
+    public int getDuration() { return this.duration; }
+
+    /**
      Testbed main() for the equals() method
      */
     public static void main(String [] args){
